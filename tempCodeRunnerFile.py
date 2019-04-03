@@ -1,1 +1,1 @@
-print(', '.join(row))
+print (tournament)
