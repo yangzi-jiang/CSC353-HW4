@@ -4,7 +4,7 @@ import sys
 import collections
 import json
 #import numpy as np
-import pandas as pd
+#import pandas as pd
 import glob
 import math
 
@@ -22,14 +22,14 @@ db.players.drop()
 # Three collections
 matches = db.match_collection
 tournaments = db.tournament_collection
-tournament_index = db.tournaments.create_index([('tournery_name', pymongo.ASCENDING), ('tourney_date', pymongo.ASCENDING)], unique=True)
+tournament_index = db.tournament_collection.create_index([('tournery_name', pymongo.ASCENDING), ('tourney_date', pymongo.ASCENDING)], unique=True)
 
 players = db.player_colletion
 # player_index = db.players.create_index([('name', pymongo.ASCENDING), ('hand', pymongo.ASCENDING), ('ht', pymongo.ASCENDING),  ('ioc', pymongo.ASCENDING),], unique=True)
 
 
 def readAllFiles(dirname):
-    with open("atp_matches_1968.csv", 'r')  as firstMatches:
+    with open("atp_matches_1968.csv", 'r', encoding='utf-8')  as firstMatches:
         reader = csv.reader(firstMatches)
         FIELDS = next(reader)
 
@@ -38,8 +38,13 @@ def readAllFiles(dirname):
     allMatchFiles = glob.glob(dirname + "/atp_matches_" + "*.csv")
 
     for filename in allMatchFiles:
-        with open(filename, 'r') as matchCSVs:
-            reader = pd.read_csv(matchCSVs, skiprows=[0]) #Skip the header row
+        with open(filename, 'r', encoding='utf-8') as matchCSVs:
+            reader = csv.reader(matchCSVs)
+            
+            # using panda
+            #reader = pd.read_csv(matchCSVs, skiprows=0) #Skip the header row
+
+            next(reader) #Skip the header row
 
             for row in reader:
                 # TODO tourney index
