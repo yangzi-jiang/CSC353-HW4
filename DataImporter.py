@@ -22,7 +22,7 @@ db.players.drop()
 # Three collections
 matches = db.match_collection
 tournaments = db.tournament_collection
-tournament_index = db.tournament_collection.create_index([('tournery_name', pymongo.ASCENDING), ('tourney_date', pymongo.ASCENDING)], unique=True)
+# tournament_index = db.tournament_collection.create_index([('tournery_name', pymongo.ASCENDING), ('tourney_date', pymongo.ASCENDING)], unique=True)
 
 players = db.player_colletion
 # player_index = db.players.create_index([('name', pymongo.ASCENDING), ('hand', pymongo.ASCENDING), ('ht', pymongo.ASCENDING),  ('ioc', pymongo.ASCENDING),], unique=True)
@@ -54,9 +54,14 @@ def readAllFiles(dirname):
                 # not using python's dictionary to store unique tournament, because that will be doing the db's job
 
                 # tourney_name = row[1] # surface = row[2] # draw_size = int(row[3]) # tourney_level = row[4] # tourney_date = int(row[5])
-                # tournament = {FIELDS[1]: row[1], FIELDS[2]: row[2], FIELDS[3]: row[3], FIELDS[4]: row[4], FIELDS[5]: row[5]}
-                tournament = {"tourney_name": row[1]}
-                # tournament_id = tournaments.insert_one(tournament)
+                
+                tournament = {FIELDS[1]: row[1], FIELDS[2]: row[2], FIELDS[3]: row[3], FIELDS[4]: row[4], FIELDS[5]: row[5]}
+                
+                try:
+                    tournament_id = tournaments.insert_one(tournament)
+                except:
+                    pass
+                # tournament = {"tourney_name": row[1]}
                 
                 # # TODO pkayer index
                 # # winner name = 10, winner hand =11, ht = 12, ioc = 13,
@@ -88,7 +93,7 @@ def readAllFiles(dirname):
     return
 
 def main():
-    readAllFiles("/Users/yangzijiang/Dropbox (Davidson College)/Davidson/04 4th Year/CSC353 - Database Systems/CSC353-HW4/HW4 Dataset copy")
+    readAllFiles("/Users/yangzijiang/Dropbox (Davidson College)/Davidson/04 4th Year/CSC353 - Database Systems/CSC353-HW4/tennis_atp-master copy")
 
 if __name__ == "__main__":
     main()
